@@ -15,6 +15,8 @@
 | `assets/style.css` | 全站样式（品牌色/主题色都在 `:root` 变量里） |
 | `assets/site.js` | 全站脚本（主题切换、倒计时、日历状态、微信号复制） |
 | `assets/og-cover.png` | 社交分享封面图 |
+| `data/friend-links.json` | **友链数据源**（改这里，不用逐页改 HTML） |
+| `tools/update_links.py` | 把友链数据源同步到 4 个页面的页脚 |
 | `robots.txt` / `sitemap.xml` | 搜索引擎收录配套 |
 
 ## 日常维护
@@ -34,12 +36,37 @@
 4. 在 4 个页面的导航（`nav.pill`）和首页「大促日历」中加入新页面链接；
 5. 更新 `sitemap.xml`。
 
-### 3. 部署
+### 3. 添加 / 修改友情链接（页脚）
+
+友链区块已预置在全站 4 个页面的页脚（`<!-- FRIEND-LINKS:START -->` 与 `<!-- FRIEND-LINKS:END -->` 之间，**不要删除标记**）。
+
+1. 编辑 `data/friend-links.json`：
+
+```json
+{
+  "contact_html": "",
+  "links": [
+    { "name": "对方站点名称", "url": "https://对方网址.com/" }
+  ]
+}
+```
+
+2. 在站点根目录运行（需要本机装有 Python 3）：
+
+```
+python tools/update_links.py
+```
+
+3. `git add -A && git commit -m "更新友情链接" && git push origin main`，1~2 分钟后全站页脚生效。
+
+> `contact_html` 可选，留空则页脚只显示友链列表；`python tools/update_links.py --check` 可检查页面与数据源是否一致。
+
+### 4. 部署
 
 `main` 分支即站点源（GitHub Pages，`.nojekyll` 已就位，CNAME 指向 dacu.net）。
 `git push origin main` 即为上线，1~2 分钟后生效。
 
-### 4. 回滚
+### 5. 回滚
 
 - 升级前原始版本标签：`pre-upgrade-2026-10-15`
 - 本机备份副本目录：`dacu_backup_2026-10-15`（含全部原文件）
