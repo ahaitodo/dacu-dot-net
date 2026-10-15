@@ -1,4 +1,28 @@
-/* dacu.net 全站脚本:微信号复制、页脚年份、大促倒计时(未开始/进行中/已结束 三阶段) */
+/* ============================================================
+   Dacu 大促 dacu.net — 全站共享脚本
+   包含：明/暗主题切换、页脚年份、微信号复制、
+         大促倒计时（未开始/进行中/已结束 三阶段）、大促日历状态
+   ============================================================ */
+
+/* ---------- 明/暗主题切换 ---------- */
+function toggleTheme(){
+  document.documentElement.classList.toggle('dark');
+  var dark = document.documentElement.classList.contains('dark');
+  var btn = document.getElementById('themeToggle');
+  if (btn) btn.textContent = dark ? '☀️' : '🌙';
+  localStorage.setItem('theme', dark ? 'dark' : 'light');
+}
+
+(function initTheme(){
+  if (localStorage.getItem('theme') === 'dark') {
+    document.documentElement.classList.add('dark');
+    document.addEventListener('DOMContentLoaded', function(){
+      var btn = document.getElementById('themeToggle');
+      if (btn) btn.textContent = '☀️';
+    });
+  }
+})();
+
 (function(){
   'use strict';
   var WXID='9262895';
@@ -12,7 +36,7 @@
   if(copyBtn){
     var msg=document.getElementById('wxmsg');
     var ok=function(){
-      msg.style.color='#2ecc71';
+      msg.style.color='var(--green)';
       msg.textContent='✓ 已复制微信号 '+WXID+' · 请在微信中搜索添加';
       copyBtn.textContent='已复制';
       setTimeout(function(){copyBtn.textContent='复制';msg.textContent='';},3000);
@@ -24,13 +48,30 @@
         document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
         ok();
       }catch(e){
-        msg.style.color='#ff4d2e';msg.textContent='复制失败,请手动复制: '+WXID;
+        msg.style.color='var(--accent)';msg.textContent='复制失败,请手动复制: '+WXID;
       }
     };
     copyBtn.addEventListener('click',function(){
       if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(WXID).then(ok).catch(fallback);}
       else{fallback();}
     });
+  }
+
+  /* 大促日历状态:即将开始 / 进行中 / 已收官(有 data-start 的卡片才参与)
+     注意:必须放在倒计时之前——没有 #stage 的页面(如首页)也要更新日历 */
+  var calLinks=document.querySelectorAll('.cal a[data-start]');
+  if(calLinks.length){
+    var calStatus=function(a){
+      var s=new Date(a.dataset.start),e=new Date(a.dataset.end);
+      if(isNaN(s.getTime())||isNaN(e.getTime())) return;
+      var now=new Date(),st=a.querySelector('.status');
+      if(!st) return;
+      if(now<s){st.textContent='即将开始';st.classList.remove('now');}
+      else if(now<e){st.textContent='进行中';st.classList.add('now');}
+      else{st.textContent='已收官';st.classList.remove('now');}
+    };
+    Array.prototype.forEach.call(calLinks,calStatus);
+    setInterval(function(){Array.prototype.forEach.call(calLinks,calStatus);},60000);
   }
 
   /* 倒计时舞台(仅大促页有) */
@@ -68,9 +109,6 @@
     elL1.textContent=stage.dataset[ph.st+'Line1']||'';
     elL2.textContent=stage.dataset[ph.st+'Line2']||'';
     elLede.innerHTML=stage.dataset[ph.st+'Lede']||'';
-    stage.style.animation='none';
-    void stage.offsetWidth;
-    stage.style.animation='';
   }
 
   var curPhase=null;
@@ -97,20 +135,4 @@
 
   tick();
   setInterval(tick,1000);
-
-  /* 大促日历状态:即将开始 / 进行中 / 已收官(有 data-start 的卡片才参与) */
-  var calLinks=document.querySelectorAll('.cal a[data-start]');
-  if(calLinks.length){
-    function calStatus(a){
-      var s=new Date(a.dataset.start),e=new Date(a.dataset.end);
-      if(isNaN(s.getTime())||isNaN(e.getTime())) return;
-      var now=new Date(),st=a.querySelector('.status');
-      if(!st) return;
-      if(now<s){st.textContent='即将开始';st.classList.remove('now');}
-      else if(now<e){st.textContent='进行中';st.classList.add('now');}
-      else{st.textContent='已收官';st.classList.remove('now');}
-    }
-    Array.prototype.forEach.call(calLinks,calStatus);
-    setInterval(function(){Array.prototype.forEach.call(calLinks,calStatus);},60000);
-  }
 })();
