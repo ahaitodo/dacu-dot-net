@@ -269,3 +269,11 @@ footer .disclosure{font-size:12px;color:var(--muted);margin-top:6px;opacity:.85}
 .fl-list li{font-size:13px}
 .fl-list .fl-empty{color:var(--muted)}
 .fl-contact{margin-top:10px;font-size:12.5px;color:var(--muted)}
+
+/* 主推横幅(按日期自动切换,site.js 控制) */
+.pbanner{display:flex;align-items:center;justify-content:center;gap:.7rem;width:100%;margin:0 auto 1.75rem;padding:.9rem 1.3rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);color:var(--text);text-decoration:none;transition:transform .15s ease}
+.pbanner b{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-size:1rem}
+.pbanner span{color:var(--muted);font-size:.85rem}
+.pbanner .pb-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none;animation:pbPulse 1.6s ease-in-out infinite}
+@keyframes pbPulse{50%{opacity:.4}}
+.pbanner:hover{transform:translateY(-2px)}

@@ -57,6 +57,30 @@ function toggleTheme(){
     });
   }
 
+  /* 主推横幅:按日期自动切换大促(每年自动,无需维护) */
+  var banner=document.getElementById('promoBanner');
+  if(banner){
+    var nowB=new Date(),yy=nowB.getFullYear();
+    var CAMPS=[
+      {w0:[9,20], w1:[10,8],  s:[10,1],  e:[10,8],  href:'guoqing.html',  name:'中秋国庆大促'},
+      {w0:[11,1], w1:[11,12], s:[11,11], e:[11,12], href:'shuang11.html', name:'双 11 主会场'},
+      {w0:[12,1], w1:[12,13], s:[12,12], e:[12,13], href:'shuang12.html', name:'双 12 主会场'}
+    ];
+    for(var bi=0;bi<CAMPS.length;bi++){
+      var cp=CAMPS[bi];
+      var ws=new Date(yy,cp.w0[0]-1,cp.w0[1]),we=new Date(yy,cp.w1[0]-1,cp.w1[1],23,59,59);
+      if(nowB<ws||nowB>we) continue;
+      var ps=new Date(yy,cp.s[0]-1,cp.s[1]);
+      var days=Math.max(0,Math.ceil((ps-nowB)/864e5));
+      banner.href=cp.href;
+      banner.innerHTML='<span class="pb-dot"></span><b>'+cp.name+'</b><span>'
+        +(nowB>=ps?'正在爆发 · 立即去抢 →':'现货热卖 · 距爆发日 '+days+' 天 →')
+        +'</span>';
+      banner.hidden=false;
+      break;
+    }
+  }
+
   /* 大促日历状态:即将开始 / 进行中 / 已收官(有 data-start 的卡片才参与)
      注意:必须放在倒计时之前——没有 #stage 的页面(如首页)也要更新日历 */
   var calLinks=document.querySelectorAll('.cal a[data-start]');
