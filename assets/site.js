@@ -30,6 +30,30 @@ function toggleTheme(){
   var y=document.getElementById('y');
   if(y) y.textContent=new Date().getFullYear();
 
+  /* 商品清单(data-src 指向 JSON,无数据则整块隐藏) */
+  var deals=document.getElementById('deals');
+  if(deals&&deals.dataset.src){
+    fetch(deals.dataset.src,{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).then(function(d){
+      if(!d||!d.items||!d.items.length){deals.hidden=true;return}
+      function esc(s){return String(s==null?'':s).replace(/[<>&"]/g,function(c){return{'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]})}
+      var h='';
+      for(var i=0;i<d.items.length;i++){
+        var it=d.items[i];
+        h+='<article class="card deal">'
+          +(it.image?'<img class="deal-img" loading="lazy" src="'+esc(it.image)+'" alt="">':'')
+          +'<h3>'+esc(it.title)+'</h3>'
+          +'<div class="deal-meta">'
+          +(it.coupon?'<span class="deal-coupon">券 '+esc(it.coupon)+'</span>':'<span></span>')
+          +(it.price?'<span class="deal-price">¥'+esc(it.price)+'</span>':'')
+          +'</div>'
+          +'<a class="btn" href="'+esc(it.url)+'" target="_blank" rel="sponsored nofollow noopener">去抢购</a>'
+          +'</article>';
+      }
+      deals.innerHTML=h;deals.hidden=false;
+      var up=document.getElementById('dealsUpdated');if(up)up.textContent='清单更新于 '+d.updated;
+    }).catch(function(){deals.hidden=true});
+  }
+
   /* 主推横幅:按日期自动切换大促(每年自动,无需维护) */
   var banner=document.getElementById('promoBanner');
   if(banner){
