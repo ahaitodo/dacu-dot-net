@@ -288,3 +288,9 @@ footer .disclosure{font-size:12px;color:var(--muted);margin-top:6px;opacity:.85}
 .deal-price{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:800;font-size:18px;color:var(--accent)}
 .deal .btn{margin-top:auto;justify-content:center}
 .deals-note{font-size:12.5px;color:var(--muted);margin-top:10px;text-align:center}
+
+/* 优惠商城(iframe 嵌入大促网) */
+.plogo.dt{background:linear-gradient(135deg,#ff2d6a,#ff9500)}
+.mall-frame{width:100%;height:calc(100vh - 240px);min-height:560px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow)}
+.mall-note{font-size:12.5px;color:var(--muted);margin-top:12px;text-align:center}
+@media(max-width:520px){.mall-frame{height:calc(100vh - 200px)}}
