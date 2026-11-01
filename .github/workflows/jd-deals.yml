@@ -18,6 +18,8 @@ jobs:
         env:
           JD_APP_KEY: ${{ secrets.JD_APP_KEY }}
           JD_APP_SECRET: ${{ secrets.JD_APP_SECRET }}
+          JD_APP_KEY2: ${{ secrets.JD_APP_KEY2 }}
+          JD_APP_SECRET2: ${{ secrets.JD_APP_SECRET2 }}
         run: python tools/fetch_jd_deals.py
       - name: 提交并推送
         run: |
