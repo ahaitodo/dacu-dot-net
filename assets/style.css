@@ -289,8 +289,9 @@ footer .disclosure{font-size:12px;color:var(--muted);margin-top:6px;opacity:.85}
 .deal .btn{margin-top:auto;justify-content:center}
 .deals-note{font-size:12.5px;color:var(--muted);margin-top:10px;text-align:center}
 
-/* 优惠商城(iframe 嵌入大促网) */
+/* 优惠商城(iframe 全屏沉浸式嵌入大促网,仅保留顶部菜单) */
 .plogo.dt{background:linear-gradient(135deg,#ff2d6a,#ff9500)}
-.mall-frame{width:100%;height:calc(100vh - 240px);min-height:560px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow)}
-.mall-note{font-size:12.5px;color:var(--muted);margin-top:12px;text-align:center}
-@media(max-width:520px){.mall-frame{height:calc(100vh - 200px)}}
+body.mall-page{height:100vh;overflow:hidden;display:flex;flex-direction:column}
+body.mall-page main.mall-main{flex:1;display:flex;flex-direction:column;min-height:0;width:100%;max-width:none;margin:0;padding:0;text-align:initial}
+body.mall-page .mall-frame{flex:1;min-height:0;width:100%;height:auto;border:0;border-radius:0;background:var(--surface)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
