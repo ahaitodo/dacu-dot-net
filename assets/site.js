@@ -1,6 +1,6 @@
 /* ============================================================
    Dacu 大促 dacu.net — 全站共享脚本
-   包含：明/暗主题切换、页脚年份、微信号复制、
+   包含：明/暗主题切换、页脚年份、
          大促倒计时（未开始/进行中/已结束 三阶段）、大促日历状态
    ============================================================ */
 
@@ -25,37 +25,10 @@ function toggleTheme(){
 
 (function(){
   'use strict';
-  var WXID='9262895';
 
   /* 页脚年份 */
   var y=document.getElementById('y');
   if(y) y.textContent=new Date().getFullYear();
-
-  /* 复制微信号 */
-  var copyBtn=document.getElementById('copyBtn');
-  if(copyBtn){
-    var msg=document.getElementById('wxmsg');
-    var ok=function(){
-      msg.style.color='var(--green)';
-      msg.textContent='✓ 已复制微信号 '+WXID+' · 请在微信中搜索添加';
-      copyBtn.textContent='已复制';
-      setTimeout(function(){copyBtn.textContent='复制';msg.textContent='';},3000);
-    };
-    var fallback=function(){
-      try{
-        var ta=document.createElement('textarea');
-        ta.value=WXID;ta.style.position='fixed';ta.style.opacity='0';
-        document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
-        ok();
-      }catch(e){
-        msg.style.color='var(--accent)';msg.textContent='复制失败,请手动复制: '+WXID;
-      }
-    };
-    copyBtn.addEventListener('click',function(){
-      if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(WXID).then(ok).catch(fallback);}
-      else{fallback();}
-    });
-  }
 
   /* 主推横幅:按日期自动切换大促(每年自动,无需维护) */
   var banner=document.getElementById('promoBanner');
