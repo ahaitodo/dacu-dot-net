@@ -30,6 +30,29 @@ function toggleTheme(){
   var y=document.getElementById('y');
   if(y) y.textContent=new Date().getFullYear();
 
+  /* 口令复制([data-copy] 通用,按钮自身反馈) */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), function(btn){
+    var text = btn.getAttribute('data-copy');
+    var done = function(){
+      var old = btn.textContent;
+      btn.textContent = '已复制 ✓';
+      btn.classList.add('done');
+      setTimeout(function(){ btn.textContent = old; btn.classList.remove('done'); }, 2000);
+    };
+    var fallback = function(){
+      try{
+        var ta=document.createElement('textarea');
+        ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+        document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+        done();
+      }catch(e){ btn.textContent='复制失败'; }
+    };
+    btn.addEventListener('click', function(){
+      if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(text).then(done).catch(fallback); }
+      else{ fallback(); }
+    });
+  });
+
   /* 商品清单(data-src 指向 JSON,无数据则整块隐藏) */
   var deals=document.getElementById('deals');
   if(deals&&deals.dataset.src){
