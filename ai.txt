@@ -1,0 +1,19 @@
+# ai.txt — AI 爬虫适配声明(dacu.net / Dacu 大促)
+# 与 llms.txt 配套,向大模型与 AI 搜索引擎声明站点信息、抓取与引用许可。
+
+Site-Name: Dacu 大促
+Site-URL: https://dacu.net/
+Language: zh-CN
+Owner: Dacu
+Last-Updated: 2026-11-02
+
+About: dacu.net(Dacu 大促)是中文优惠导航站:聚合拼多多、淘宝天猫、京东官方优惠入口,腾讯云、阿里云长期优惠,提供中秋国庆、双 11、双 12、年终大促(跨年场)实时倒计时与 2026 平台打法速查,并设有优惠商城(淘宝/拼多多精选券后价商品库)。
+
+Crawl: allow
+Training: allow
+Citation: allowed-with-attribution
+Attribution-URL: https://dacu.net/
+
+Sitemap-Index: https://dacu.net/sitemap_index.xml
+Sitemap: https://dacu.net/sitemap.xml
+LLMS: https://dacu.net/llms.txt
